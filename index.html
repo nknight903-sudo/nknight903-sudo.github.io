@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Belajar Bahasa Jepang Ultimate</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  text-align: center;
+}
+
+header {
+  padding: 30px;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  color: black;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+img {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background: #ff4081;
+  color: white;
+  cursor: pointer;
+  margin: 5px;
+}
+
+button:hover {
+  background: #e91e63;
+}
+
+.wa {
+  background: #25D366;
+}
+
+.hidden {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Belajar Bahasa Jepang</h1>
+<p>Belajar + Kuis + Chat langsung</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>Materi Dasar</h2>
+<h3>A = あ | I = い | U = う | E = え | O = お</h3>
+<h3>Ka = か | Ki = き | Ke = け | Ko = こ</h3>
+<h3>Sa = さ | Shi = し | Su = す | Se = せ | So = そ</h3>
+<h3>Ta = た | Chi = ち | Tsu = つ | Te = て | To = と</h3>
+<h3>Na = な | ni = に | Nu = ぬ | Ne = ね | No = の</h3>
+<h3> は | Hi = ひ | Fu = ふ | He = へ | Ho = ほ</h3>
+<h3>ま | Mi = み | Mu = む | Me = め | Mo</h3>
+<h3>Ya = や | Yu = ゆ | Yo = よ</h3>
+<h3>Ra = ら | Ri = り | Ru = る | Re = れ | Ro = ろ</h3>
+<h3>Wa = わ | Wo = を</h3>
+<h3>>N = ん</h3>
+
+
+</div>
+
+<div class="card">
+<h2>Pilih Level</h2>
+<button onclick="mulai('mudah')">Mudah</button>
+<button onclick="mulai('sedang')">Sedang</button>
+<button onclick="mulai('sulit')">Sulit</button>
+</div>
+
+<div id="quiz" class="card hidden"></div>
+
+<div class="card">
+<h2>Butuh Bantuan?</h2>
+<button class="wa" onclick="kirimWA()">Chat WhatsApp</button>
+</div>
+
+</div>
+
+<script>
+let skorTerakhir = 0;
+
+let soal = {
+  mudah: [
+    ["Ini あ Huruf Apa?", ["A", "I", "U", "E", "O"], 1],
+    ["Huruf I Yang Mana?", ["お", "い", "け", "ん", "う"], 0],
+    ["Ini れ Huruf Artinya Apa?", ["Chi", "Ri", "No", "Ko", "Re"], 0]
+  ],
+  sedang: [
+    ["Arti Konbanwa?", ["Maaf", "Terima kasih", "Selamat tinggal", "Taberu", "Selamat malam"], 1],
+    ["Arti Dari Konniciwa?", ["Halo", "Selamat pagi", " Taberu", "Minum", "Selamat tinggal"], 0],
+     ["Ohayou Gozaimasu artinya?", ["Selamat Pagi", "Selamat malam", "Selamat tinggal", "Selamat makan", "Halo"], 0]
+  ],
+  sulit: [
+    [" Apa arti Bacaan Tersebut お食事をお楽しみください", ["Selamat Makan", "Selamat tinggal", "selamat Malam", "Selamat Pagi"], 0],
+    ["Yang Bacaan Halo Yang Mana?", ["こんにちは", "おはよう", "食べる", "さようなら"], 0],
+    ["Neko adalah?", ["Kucing", "Anjing"], 0],
+    ["Inu adalah?", ["Kucing", "Anjing"], 1]
+  ]
+};
+
+function mulai(level) {
+  let div = document.getElementById("quiz");
+  div.innerHTML = "<h2>Kuis Level " + level + "</h2>";
+  div.classList.remove("hidden");
+
+  soal[level].forEach((s, i) => {
+    div.innerHTML += `<p>${i+1}. ${s[0]}</p>`;
+    s[1].forEach((opsi, j) => {
+      div.innerHTML += `
+        <input type="radio" name="q${i}" value="${j}"> ${opsi}<br>
+      `;
+    });
+  });
+
+  div.innerHTML += `<br><button onclick="cek('${level}')">Submit</button>`;
+}
+
+function cek(level) {
+  let skor = 0;
+
+  soal[level].forEach((s, i) => {
+    let jawaban = document.getElementsByName("q"+i);
+    for (let j = 0; j < jawaban.length; j++) {
+      if (jawaban[j].checked && j == s[2]) {
+        skor++;
+      }
+    }
+  });
+
+  skorTerakhir = skor;
+
+  document.getElementById("quiz").innerHTML += `<h3>Skor: ${skor}/${soal[level].length}</h3>`;
+}
+
+function kirimWA() {
+  let pesan = `Halo Saya Ingin Belajar Bahasa Jepang Lebih Dalam Dengan Anda Soalnya Saya Tidak Paham Dengan Materi Dan Kuis Yang anda berikan Jadi bisakah Anda Bantu Saya Untuk Memahaminya!`;
+  let url = "https://wa.me/6282228944634?text=" + encodeURIComponent(pesan);
+  window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
